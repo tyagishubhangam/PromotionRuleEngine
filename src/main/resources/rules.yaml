@@ -1,0 +1,19 @@
+- id: "promo1"
+  conditions:
+    minLevel: 5
+    maxLevel: 10
+    spendTier: "low"
+    country: "IN"
+    daysSinceLastPurchase: 3
+  promotion:
+    title: "Comeback Bonus"
+    reward: "100 coins"
+
+- id: "promo2"
+  conditions:
+    minLevel: 10
+    spendTier: "high"
+    country: "US"
+  promotion:
+    title: "High Roller Bonus"
+    reward: "VIP Chest"
