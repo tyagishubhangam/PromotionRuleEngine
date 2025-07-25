@@ -9,4 +9,6 @@ public class Condition {
     private String spendTier;
     private String country;
     private Integer daysSinceLastPurchase;
+    private String abBucket;
+
 }

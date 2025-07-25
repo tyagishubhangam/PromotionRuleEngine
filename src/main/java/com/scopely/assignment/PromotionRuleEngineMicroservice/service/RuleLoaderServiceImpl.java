@@ -1,8 +1,10 @@
 package com.scopely.assignment.PromotionRuleEngineMicroservice.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.model.PromotionRule;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,9 @@ public class RuleLoaderServiceImpl implements RulesLoaderService {
     public void loadRules() {
         try{
             ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+            objectMapper.registerModule(new JavaTimeModule()); // ✅ Required for LocalDateTime
+            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            objectMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rules.yaml");
             rules = objectMapper.readValue(inputStream, new TypeReference<List<PromotionRule>>() {});
         } catch (Exception e) {
