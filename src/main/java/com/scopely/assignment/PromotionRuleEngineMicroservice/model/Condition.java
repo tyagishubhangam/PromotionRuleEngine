@@ -6,7 +6,7 @@ import lombok.Data;
 public class Condition {
     private Integer minLevel;
     private Integer maxLevel;
-    private String spendTier;
+    private SpendTier spendTier;
     private String country;
     private Integer daysSinceLastPurchase;
     private String abBucket;

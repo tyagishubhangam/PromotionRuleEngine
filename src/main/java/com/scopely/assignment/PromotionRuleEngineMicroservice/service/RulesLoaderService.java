@@ -7,4 +7,6 @@ import java.util.List;
 public interface RulesLoaderService {
     void loadRules();
     List<PromotionRule> getRules();
+
+    List<PromotionRule> getRulesByCountryAndBucket(String country, String abBucket);
 }

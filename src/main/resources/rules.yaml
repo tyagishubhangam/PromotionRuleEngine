@@ -1,4 +1,5 @@
 - id: "promoComeback"
+  priority: 10
   conditions:
     minLevel: 6
     spendTier: "low"
@@ -9,6 +10,7 @@
     reward: "100 coins"
 
 - id: "promoTimed"
+  priority: 8
   startTime: 2025-07-25T00:00:00
   endTime: 2025-07-30T23:59:59
   conditions:
@@ -20,6 +22,7 @@
     reward: "Rush Crate"
 
 - id: "promoGeneric"
+  priority: 5
   conditions:
     minLevel: 10
     spendTier: "medium"
@@ -28,7 +31,36 @@
     title: "Loyalty Reward"
     reward: "500 coins"
 
+- id: "promoLowLevelGlobal"
+  priority: 4
+  conditions:
+    maxLevel: 3
+  promotion:
+    title: "Newbie Welcome"
+    reward: "Starter Pack"
+
+- id: "promoA1"
+  priority: 3
+  conditions:
+    abBucket: "A"
+    minLevel: 5
+    country: "IN"
+  promotion:
+    title: "100 Coins for A"
+    reward: "100 coins"
+
+- id: "promoB1"
+  priority: 3
+  conditions:
+    abBucket: "B"
+    minLevel: 5
+    country: "IN"
+  promotion:
+    title: "1 Free Spin for B"
+    reward: "1 free spin"
+
 - id: "promoC1"
+  priority: 3
   conditions:
     abBucket: "C"
     minLevel: 5
@@ -39,6 +71,7 @@
     reward: "VIP Chest"
 
 - id: "promoB2"
+  priority: 2
   conditions:
     abBucket: "B"
     spendTier: "high"
@@ -46,28 +79,3 @@
   promotion:
     title: "Exclusive Canada Promo"
     reward: "Maple Bundle"
-
-- id: "promoA1"
-  conditions:
-    abBucket: "A"
-    minLevel: 5
-    country: "IN"
-  promotion:
-    title: "100 Coins for A"
-    reward: "100 coins"
-
-- id: "promoB1"
-  conditions:
-    abBucket: "B"
-    minLevel: 5
-    country: "IN"
-  promotion:
-    title: "1 Free Spin for B"
-    reward: "1 free spin"
-
-- id: "promoLowLevelGlobal"
-  conditions:
-    maxLevel: 3
-  promotion:
-    title: "Newbie Welcome"
-    reward: "Starter Pack"
