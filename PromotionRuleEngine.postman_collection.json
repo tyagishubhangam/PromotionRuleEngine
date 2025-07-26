@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "24c040b7-9793-4222-acf8-4c81bc24f069",
+		"name": "PromotionRuleEngine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36787459",
+		"_collection_link": "https://www.postman.com/shubhangamty189/workspace/promotion-engine/collection/36787459-24c040b7-9793-4222-acf8-4c81bc24f069?action=share&source=collection_link&creator=36787459"
+	},
+	"item": [
+		{
+			"name": "Get Metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"metrics"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sample Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/metrics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"metrics"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 26 Jul 2025 06:08:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"totalEvaluations\": 22,\n    \"hits\": 22,\n    \"misses\": 0,\n    \"averageLatencyMs\": 0.4090909090909091\n}"
+				}
+			]
+		},
+		{
+			"name": "Generate Promotion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/promotion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"promotion"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sample response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/promotion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"promotion"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 26 Jul 2025 06:09:27 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"promotion\": {\n        \"title\": \"100 Coins for A\",\n        \"reward\": \"100 coins\"\n    },\n    \"suggestion\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Fetch Rules",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Sample Response 1",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/rules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rules"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 26 Jul 2025 06:10:57 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"promoComeback\",\n        \"conditions\": {\n            \"minLevel\": 6,\n            \"maxLevel\": null,\n            \"spendTier\": \"LOW\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": 3,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Comeback Bonus\",\n            \"reward\": \"100 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 10\n    },\n    {\n        \"id\": \"promoTimed\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": \"LOW\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Weekend Rush Promo\",\n            \"reward\": \"Rush Crate\"\n        },\n        \"startTime\": \"2025-07-25T00:00:00\",\n        \"endTime\": \"2025-07-30T23:59:59\",\n        \"priority\": 8\n    },\n    {\n        \"id\": \"promoGeneric\",\n        \"conditions\": {\n            \"minLevel\": 10,\n            \"maxLevel\": null,\n            \"spendTier\": \"MEDIUM\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Loyalty Reward\",\n            \"reward\": \"500 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 5\n    },\n    {\n        \"id\": \"promoLowLevelGlobal\",\n        \"conditions\": {\n            \"minLevel\": null,\n            \"maxLevel\": 3,\n            \"spendTier\": null,\n            \"country\": null,\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Newbie Welcome\",\n            \"reward\": \"Starter Pack\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 4\n    },\n    {\n        \"id\": \"promoA1\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": null,\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"A\"\n        },\n        \"promotion\": {\n            \"title\": \"100 Coins for A\",\n            \"reward\": \"100 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 3\n    },\n    {\n        \"id\": \"promoB1\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": null,\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"B\"\n        },\n        \"promotion\": {\n            \"title\": \"1 Free Spin for B\",\n            \"reward\": \"1 free spin\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 3\n    },\n    {\n        \"id\": \"promoC1\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": \"HIGH\",\n            \"country\": \"US\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"C\"\n        },\n        \"promotion\": {\n            \"title\": \"Premium Bonus for C\",\n            \"reward\": \"VIP Chest\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 3\n    },\n    {\n        \"id\": \"promoB2\",\n        \"conditions\": {\n            \"minLevel\": null,\n            \"maxLevel\": null,\n            \"spendTier\": \"HIGH\",\n            \"country\": \"CA\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"B\"\n        },\n        \"promotion\": {\n            \"title\": \"Exclusive Canada Promo\",\n            \"reward\": \"Maple Bundle\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 2\n    }\n]"
+				},
+				{
+					"name": "Sample Response With Query",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/rules?country=IN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rules"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "IN"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 26 Jul 2025 06:11:26 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"promoComeback\",\n        \"conditions\": {\n            \"minLevel\": 6,\n            \"maxLevel\": null,\n            \"spendTier\": \"LOW\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": 3,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Comeback Bonus\",\n            \"reward\": \"100 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 10\n    },\n    {\n        \"id\": \"promoTimed\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": \"LOW\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Weekend Rush Promo\",\n            \"reward\": \"Rush Crate\"\n        },\n        \"startTime\": \"2025-07-25T00:00:00\",\n        \"endTime\": \"2025-07-30T23:59:59\",\n        \"priority\": 8\n    },\n    {\n        \"id\": \"promoGeneric\",\n        \"conditions\": {\n            \"minLevel\": 10,\n            \"maxLevel\": null,\n            \"spendTier\": \"MEDIUM\",\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Loyalty Reward\",\n            \"reward\": \"500 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 5\n    },\n    {\n        \"id\": \"promoLowLevelGlobal\",\n        \"conditions\": {\n            \"minLevel\": null,\n            \"maxLevel\": 3,\n            \"spendTier\": null,\n            \"country\": null,\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": null\n        },\n        \"promotion\": {\n            \"title\": \"Newbie Welcome\",\n            \"reward\": \"Starter Pack\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 4\n    },\n    {\n        \"id\": \"promoA1\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": null,\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"A\"\n        },\n        \"promotion\": {\n            \"title\": \"100 Coins for A\",\n            \"reward\": \"100 coins\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 3\n    },\n    {\n        \"id\": \"promoB1\",\n        \"conditions\": {\n            \"minLevel\": 5,\n            \"maxLevel\": null,\n            \"spendTier\": null,\n            \"country\": \"IN\",\n            \"daysSinceLastPurchase\": null,\n            \"abBucket\": \"B\"\n        },\n        \"promotion\": {\n            \"title\": \"1 Free Spin for B\",\n            \"reward\": \"1 free spin\"\n        },\n        \"startTime\": null,\n        \"endTime\": null,\n        \"priority\": 3\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Reload Rules from yaml",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/reloadRules",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reloadRules"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sample Response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"level\": 6,\n  \"country\": \"IN\",\n  \"spendTier\": \"low\",\n  \"daysSinceLastPurchase\": 3,\n  \"abBucket\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/reloadRules",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reloadRules"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 26 Jul 2025 06:13:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Rules reloaded successfully."
+				}
+			]
+		}
+	]
+}
