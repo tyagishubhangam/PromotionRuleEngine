@@ -16,4 +16,8 @@ public class PlayerRequest {
 
     @Schema(description = "Days since player's last purchase", example = "3")
     private int daysSinceLastPurchase;
+
+    @Schema(description = "A/B testing bucket assigned to the player", example = "A")
+    private String abBucket;
+
 }

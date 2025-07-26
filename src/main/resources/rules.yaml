@@ -1,7 +1,6 @@
-- id: "promo1"
+- id: "promoComeback"
   conditions:
-    minLevel: 5
-    maxLevel: 10
+    minLevel: 6
     spendTier: "low"
     country: "IN"
     daysSinceLastPurchase: 3
@@ -9,11 +8,66 @@
     title: "Comeback Bonus"
     reward: "100 coins"
 
-- id: "promo2"
+- id: "promoTimed"
+  startTime: 2025-07-25T00:00:00
+  endTime: 2025-07-30T23:59:59
+  conditions:
+    minLevel: 5
+    spendTier: "low"
+    country: "IN"
+  promotion:
+    title: "Weekend Rush Promo"
+    reward: "Rush Crate"
+
+- id: "promoGeneric"
   conditions:
     minLevel: 10
+    spendTier: "medium"
+    country: "IN"
+  promotion:
+    title: "Loyalty Reward"
+    reward: "500 coins"
+
+- id: "promoC1"
+  conditions:
+    abBucket: "C"
+    minLevel: 5
     spendTier: "high"
     country: "US"
   promotion:
-    title: "High Roller Bonus"
+    title: "Premium Bonus for C"
     reward: "VIP Chest"
+
+- id: "promoB2"
+  conditions:
+    abBucket: "B"
+    spendTier: "high"
+    country: "CA"
+  promotion:
+    title: "Exclusive Canada Promo"
+    reward: "Maple Bundle"
+
+- id: "promoA1"
+  conditions:
+    abBucket: "A"
+    minLevel: 5
+    country: "IN"
+  promotion:
+    title: "100 Coins for A"
+    reward: "100 coins"
+
+- id: "promoB1"
+  conditions:
+    abBucket: "B"
+    minLevel: 5
+    country: "IN"
+  promotion:
+    title: "1 Free Spin for B"
+    reward: "1 free spin"
+
+- id: "promoLowLevelGlobal"
+  conditions:
+    maxLevel: 3
+  promotion:
+    title: "Newbie Welcome"
+    reward: "Starter Pack"

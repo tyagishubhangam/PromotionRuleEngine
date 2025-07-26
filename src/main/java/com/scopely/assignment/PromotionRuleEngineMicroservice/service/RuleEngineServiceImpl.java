@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -18,12 +20,20 @@ public class RuleEngineServiceImpl implements RuleEngineService {
     @Override
     public PromotionPayload evaluate(PlayerRequest player) {
         for(PromotionRule rule : rulesLoaderService.getRules() ){
+            // 🔧 Time window validation
+            if (rule.getStartTime() != null && LocalDateTime.now().isBefore(rule.getStartTime())) continue;
+            if (rule.getEndTime() != null && LocalDateTime.now().isAfter(rule.getEndTime())) continue;
+
             Condition condition = rule.getConditions();
             if (condition.getMinLevel() != null && player.getLevel() < condition.getMinLevel()) { continue;}
             if (condition.getMaxLevel() != null && player.getLevel() > condition.getMaxLevel()) { continue;}
             if (condition.getSpendTier() != null && !condition.getSpendTier().equalsIgnoreCase(player.getSpendTier())) { continue;}
             if (condition.getCountry() != null && !condition.getCountry().equalsIgnoreCase(player.getCountry())) { continue;}
             if (condition.getDaysSinceLastPurchase() != null && player.getDaysSinceLastPurchase() != condition.getDaysSinceLastPurchase()) { continue;}
+
+            // 🔧 A/B bucket check
+            if (condition.getAbBucket() != null && !condition.getAbBucket().equalsIgnoreCase(player.getAbBucket())) continue;
+
 
             return rule.getPromotion();
         }
