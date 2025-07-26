@@ -20,34 +20,44 @@ import java.util.*;
 @Service
 public class RuleLoaderServiceImpl implements RulesLoaderService {
 
+    // 🔁 Stores all loaded rules (raw list)
     private List<PromotionRule> rules = Collections.emptyList();
 
-    // ✅ Added: Nested map for efficient access — country -> abBucket -> rules
+    // ⚡ Optimized index: country -> abBucket -> List<PromotionRule>
     private Map<String, Map<String, List<PromotionRule>>> rulesByCountryAndBucket = new HashMap<>();
 
+    /**
+     * Loads rules automatically on service startup
+     */
     @PostConstruct
     public void loadRulesOnStartup() {
         loadRules();
     }
 
+    /**
+     * Loads rules from the YAML file into memory,
+     * builds fast lookup map for country + A/B bucket combinations
+     */
     @Override
     public void loadRules() {
         try {
-            // ✅ Modern Jackson configuration
+            // 📦 Create an ObjectMapper with YAML + LocalDateTime support
             ObjectMapper objectMapper = JsonMapper.builder(new YAMLFactory())
-                    .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-                    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                    .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+                    .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS) // Accept enums like "low" or "LOW"
+                    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES) // Ignore extra fields in YAML
+                    .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE) // Prevent unwanted date shifting
                     .build();
-            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.registerModule(new JavaTimeModule()); // Support for LocalDateTime
 
+            // 📄 Load the rules.yaml file from resources
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rules.yaml");
+
+            // 🧾 Deserialize YAML into Java objects
             rules = objectMapper.readValue(inputStream, new TypeReference<List<PromotionRule>>() {});
 
-            // ✅ Clear and rebuild index
+            // ♻️ Rebuild the country + bucket lookup map
             rulesByCountryAndBucket = new HashMap<>();
 
-            // ✅ Build the nested index
             for (PromotionRule rule : rules) {
                 Condition condition = rule.getConditions();
                 if (condition == null) continue;
@@ -56,6 +66,7 @@ public class RuleLoaderServiceImpl implements RulesLoaderService {
                 String abBucket = condition.getAbBucket();
                 if (country == null || abBucket == null) continue;
 
+                // 📌 Normalize to uppercase for consistent matching
                 String countryKey = country.toUpperCase();
                 String bucketKey = abBucket.toUpperCase();
 
@@ -65,22 +76,32 @@ public class RuleLoaderServiceImpl implements RulesLoaderService {
                         .add(rule);
             }
 
-            log.info("Loaded {} rules with indexing by country and bucket", rules.size());
+            log.info("✅ Loaded {} rules and indexed by country and A/B bucket", rules.size());
 
         } catch (Exception e) {
-            log.error("Failed to load rules: {}", e.getMessage(), e);
+            log.error("❌ Failed to load rules: {}", e.getMessage(), e);
         }
     }
 
+    /**
+     * Returns all loaded rules (raw list from YAML)
+     */
     @Override
     public List<PromotionRule> getRules() {
         return rules;
     }
 
-    // ✅ New method to get rules by country + bucket
+    /**
+     * Returns rules filtered by both country and A/B bucket.
+     * Falls back to returning all rules if any key is missing.
+     *
+     * @param country   Country code (e.g., "IN")
+     * @param abBucket  A/B test bucket (e.g., "A")
+     * @return List of matching rules
+     */
     public List<PromotionRule> getRulesByCountryAndBucket(String country, String abBucket) {
         if (country == null || abBucket == null) {
-            return rules; // fallback to all rules
+            return rules; // fallback: return all rules (non-optimized)
         }
 
         Map<String, List<PromotionRule>> bucketMap =
