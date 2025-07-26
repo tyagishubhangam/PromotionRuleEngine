@@ -469,55 +469,28 @@ POST http://localhost:8080/reloadRules
 ---
 
 
-## 📬 Using Postman for API Testing
+## 📬 Postman Collection
 
-If you prefer Postman over Swagger UI, follow these steps:
+A Postman collection is available to help you quickly test the API endpoints.
 
-### 🔗 Base URL
+🔗 **[Go to Postman Collection](https://www.postman.com/shubhangamty189/workspace/promotion-engine/collection/36787459-24c040b7-9793-4222-acf8-4c81bc24f069?action=share&creator=36787459)**
 
+> This collection includes pre-configured requests for:
+> - `POST /promotion`
+> - `GET /metrics`
+> - `POST /reloadRules`
+> - `GET /rules` (with and without filters)
+
+You can import this collection into Postman using:
+1. **File → Import → Link/Raw Text**
+2. Paste the above link or upload the `.postman_collection.json` file
+
+The base URL is:
 ```
 http://localhost:8080
 ```
 
-### 🔹 POST /promotion
 
-- **URL**: `http://localhost:8080/promotion`
-- **Method**: POST
-- **Body** (raw → JSON):
-```json
-{
-  "level": 8,
-  "country": "IN",
-  "spendTier": "LOW",
-  "daysSinceLastPurchase": 3,
-  "abBucket": "A"
-}
-```
-
-### 🔹 GET /rules
-
-- **URL**: `http://localhost:8080/rules`
-- **Method**: GET
-
-Optionally, add query param: `country=IN`
-
----
-
-### 🔹 GET /metrics
-
-- **URL**: `http://localhost:8080/metrics`
-- **Method**: GET
-
----
-
-### 🔹 POST /reloadRules
-
-- **URL**: `http://localhost:8080/reloadRules`
-- **Method**: POST
-
-Use this if you make changes to `rules.yaml` and want to reload without restarting.
-
----
 
 You can also import the Swagger OpenAPI into Postman:
 - Visit: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
