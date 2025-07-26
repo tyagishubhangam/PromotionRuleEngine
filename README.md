@@ -469,6 +469,133 @@ POST http://localhost:8080/reloadRules
 ---
 
 
+## 📬 Using Postman for API Testing
+
+If you prefer Postman over Swagger UI, follow these steps:
+
+### 🔗 Base URL
+
+```
+http://localhost:8080
+```
+
+### 🔹 POST /promotion
+
+- **URL**: `http://localhost:8080/promotion`
+- **Method**: POST
+- **Body** (raw → JSON):
+```json
+{
+  "level": 8,
+  "country": "IN",
+  "spendTier": "LOW",
+  "daysSinceLastPurchase": 3,
+  "abBucket": "A"
+}
+```
+
+### 🔹 GET /rules
+
+- **URL**: `http://localhost:8080/rules`
+- **Method**: GET
+
+Optionally, add query param: `country=IN`
+
+---
+
+### 🔹 GET /metrics
+
+- **URL**: `http://localhost:8080/metrics`
+- **Method**: GET
+
+---
+
+### 🔹 POST /reloadRules
+
+- **URL**: `http://localhost:8080/reloadRules`
+- **Method**: POST
+
+Use this if you make changes to `rules.yaml` and want to reload without restarting.
+
+---
+
+You can also import the Swagger OpenAPI into Postman:
+- Visit: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+- Export JSON
+- Import into Postman as a collection
+
+
+
+## 🧪 Testing Note
+
+Unit and integration tests were **not implemented** in this version of the project.
+
+### Why?
+
+- The assignment did not explicitly require tests.
+- I prioritized building clean, modular, and well-documented business logic first.
+- I also wanted to ensure that the core APIs, rule parsing, and edge-case handling were fully functional end-to-end.
+
+### Future Plan
+
+I am eager to add:
+- ✅ JUnit 5 + Mockito test coverage for `RuleEngineService`
+- ✅ Validation tests for edge cases and exceptions
+- ✅ Integration test cases for controller endpoints using `MockMvc`
+
+Testing is an area I have actively started exploring and excited to improve upon.
+
+---
+
+## 🧠 Reflection and Rationale
+
+### 🔧 a. Design Choices
+
+#### i. Why This Design?
+
+- **Rule Matching**: I used a `List<PromotionRule>` and iterated it using traditional loops. This ensured clarity, control, and performance for an in-memory system.
+- **DTO Usage**: DTOs (`PlayerRequest`, `PromotionPayload`, `MetricsResponse`) were used to separate internal logic from API contracts, ensuring clean and maintainable code.
+- **Modular Services**: Interfaces and implementations were separated (e.g., `RuleEngineServiceImpl`) to follow the SOLID principles and allow future extensibility.
+- **YAML for Rules**: YAML was chosen as it’s easy to read/write for non-developers like product managers.
+- **Enum Usage**: The `SpendTier` enum was added to prevent typos and standardize input.
+
+#### ii. Alternatives Considered
+
+- Considered using Java Stream APIs for filtering rules but avoided it to maintain clarity and because I’m still gaining fluency with streams.
+- Considered using a database for rules instead of YAML, but the assignment required in-memory usage.
+
+---
+
+### ⚖️ b. Trade-offs
+
+- **Simplicity vs Performance**: Opted for simple loops over more optimized data structures (like Maps or Trees) to keep the logic accessible and easy to debug.
+- **Stateless vs Stateful**: Metrics are kept in memory using atomic counters—lightweight but not persistent.
+- **No DB Persistence**: Faster startup and easier testing, but not ideal if you needed auditability or long-term storage.
+
+---
+
+### ❓ c. Areas of Uncertainty
+
+- **Multiple Matches**: Unsure if all matching rules should be returned or just the first. I stuck to first-match logic but introduced a `priority` field for extensibility.
+- **Suggestion Granularity**: I kept suggestion logic simple and rule-based rather than scoring or ML-based due to time and clarity constraints.
+- **Validation Handling**: Chose to return structured error responses for validation but left out full i18n or field-specific messaging for brevity.
+
+---
+
+### 🤖 d. AI Assistance Disclosure
+
+During the development of this project, AI tools such as **ChatGPT** were used for the following purposes:
+- Drafting README sections and markdown formatting
+- Generating sample `rules.yaml` data and mock player input requests
+- Suggesting architectural improvements
+- Explaining trade-offs (e.g., between time window checking vs performance)
+- Clarifying backend concepts like A/B testing, time windows, and enum deserialization
+- Suggesting best practices for error handling and code modularity
+- Providing suggestions for improvement and extensibility
+All business logic, service wiring, exception handling, and debugging were implemented manually in IntelliJ. 
+AI was used as a learning and productivity assistant, not a code generator.
+
+---
 
 ## 🚀 Future Enhancements
 
