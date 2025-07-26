@@ -4,7 +4,9 @@ import com.scopely.assignment.PromotionRuleEngineMicroservice.dto.MetricsRespons
 import com.scopely.assignment.PromotionRuleEngineMicroservice.dto.PlayerPromotionResponse;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.dto.PlayerRequest;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.metrics.MetricsService;
+import com.scopely.assignment.PromotionRuleEngineMicroservice.model.Condition;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.model.PromotionPayload;
+import com.scopely.assignment.PromotionRuleEngineMicroservice.model.PromotionRule;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.service.RuleEngineService;
 import com.scopely.assignment.PromotionRuleEngineMicroservice.service.RulesLoaderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,9 +15,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Tag(name = "Promotion Rule Engine", description = "APIs for evaluating and managing promotion rules")
@@ -36,7 +42,7 @@ public class PromotionController {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content()),
     })
     @PostMapping("/promotion")
-    public ResponseEntity<PlayerPromotionResponse> getPlayerPromotion(@RequestBody PlayerRequest playerRequest) {
+    public ResponseEntity<PlayerPromotionResponse> getPlayerPromotion(@Valid @RequestBody PlayerRequest playerRequest) {
         long start = System.currentTimeMillis();
         PromotionPayload result = ruleEngineService.evaluate(playerRequest);
         long latency = System.currentTimeMillis() - start;
@@ -78,5 +84,27 @@ public class PromotionController {
     public ResponseEntity<String> reloadRules() {
         rulesLoaderService.loadRules();
         return ResponseEntity.ok("Rules reloaded successfully.");
+    }
+
+    @GetMapping("/rules")
+    @Operation(summary = "Get all loaded promotion rules", description = "Returns promotion rules, optionally filtered by country")
+    public ResponseEntity<List<PromotionRule>> getRulesByCountry(
+            @RequestParam(required = false) String country) {
+
+        List<PromotionRule> allRules = rulesLoaderService.getRules();
+        List<PromotionRule> filteredRules = new ArrayList<>();
+
+        if (country == null || country.isBlank()) {
+            return ResponseEntity.ok(allRules); // no filtering
+        }
+
+        for (PromotionRule rule : allRules) {
+            Condition condition = rule.getConditions();
+            if (condition.getCountry() == null || condition.getCountry().equalsIgnoreCase(country)) {
+                filteredRules.add(rule);
+            }
+        }
+
+        return ResponseEntity.ok(filteredRules);
     }
 }
