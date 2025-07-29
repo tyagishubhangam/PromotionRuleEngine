@@ -110,7 +110,7 @@ Evaluates a player's attributes and returns a matching promotion or a helpful su
 ```json
 {
   "promotion": null,
-  "suggestion": "Level up to 10+ to unlock Loyalty Reward"
+  "suggestion": "No matching promotion found. Keep playing to unlock exciting rewards!"
 }
 ```
 
