@@ -1,232 +1,3 @@
-[//]: # (# 🎰 Promotion Rule Engine – Scopely Backend Intern Assignment)
-
-[//]: # ()
-[//]: # (A lightweight, scalable backend service to evaluate and apply promotion rules based on dynamic player attributes.)
-
-[//]: # ()
-[//]: # (## 📌 Problem Statement)
-
-[//]: # ()
-[//]: # (Design and implement a Promotion Rule Engine that:)
-
-[//]: # (- Loads rules from an in-memory YAML file at startup)
-
-[//]: # (- Evaluates player attributes against these rules)
-
-[//]: # (- Returns matching promotions, if any)
-
-[//]: # (- Supports hot-reloading of rules at runtime)
-
-[//]: # ()
-[//]: # (## ✅ Features Implemented)
-
-[//]: # ()
-[//]: # (| Feature | Description |)
-
-[//]: # (|--------|-------------|)
-
-[//]: # (| 🔍 Rule Evaluation Engine | Matches player request against all rules |)
-
-[//]: # (| 🧠 Smart Suggestions | Suggests what to change if no rule matches |)
-
-[//]: # (| 📄 YAML Rules | Rules are defined in `rules.yaml` |)
-
-[//]: # (| ♻️ Hot Reload | Reload rules without restarting via API |)
-
-[//]: # (| 📊 Metrics API | Total requests, hits, misses, latency |)
-
-[//]: # (| 🌍 Country + Bucket Filters | Optimized lookup for performance |)
-
-[//]: # (| ⏰ Time Windows | Rules valid only in specific date/time range |)
-
-[//]: # (| 🧪 A/B Testing | Rules apply based on A/B bucket |)
-
-[//]: # (| ⚠️ Edge Case Handling | Invalid input, unknown fields, large rules |)
-
-[//]: # (| 📘 Swagger UI | Auto-generated OpenAPI docs |)
-
-[//]: # (| 🧱 Enum Validation | Enum-safe with case-insensitive config |)
-
-[//]: # (| 🛑 Global Error Handling | Graceful 400 errors for invalid requests |)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## 🧾 Tech Stack)
-
-[//]: # ()
-[//]: # (- Java 17)
-
-[//]: # (- Spring Boot 3.5)
-
-[//]: # (- Jackson YAML)
-
-[//]: # (- Swagger)
-
-[//]: # (- Lombok)
-
-[//]: # ()
-[//]: # ()
-[//]: # ()
-[//]: # (## 📂 Project Structure)
-
-[//]: # ()
-[//]: # (```text)
-
-[//]: # (com.scopely.assignment.PromotionRuleEngineMicroservice)
-
-[//]: # (│)
-
-[//]: # (├── config/                 )
-
-[//]: # (│   └── SwaggerConfig.java)
-
-[//]: # (│)
-
-[//]: # (├── controller/             )
-
-[//]: # (│   └── PromotionController.java)
-
-[//]: # (│)
-
-[//]: # (├── dto/                    )
-
-[//]: # (│   ├── MetricsResponse.java)
-
-[//]: # (│   ├── PlayerRequest.java)
-
-[//]: # (│   ├── PlayerPromotionResponse.java)
-
-[//]: # (│   └── ValidationErrorResponse.java)
-
-[//]: # (│)
-
-[//]: # (├── exception/              )
-
-[//]: # (│   └── GlobalExceptionHandler.java)
-
-[//]: # (│)
-
-[//]: # (├── metrics/                )
-
-[//]: # (│   ├── MetricsService.java)
-
-[//]: # (│   └── MetricsServiceImpl.java)
-
-[//]: # (│)
-
-[//]: # (├── model/                  )
-
-[//]: # (│   ├── Condition.java)
-
-[//]: # (│   ├── PromotionPayload.java)
-
-[//]: # (│   ├── PromotionRule.java)
-
-[//]: # (│   └── SpendTier.java)
-
-[//]: # (│)
-
-[//]: # (├── service/                )
-
-[//]: # (│   ├── RuleEngineService.java)
-
-[//]: # (│   ├── RuleEngineServiceImpl.java)
-
-[//]: # (│   ├── RulesLoaderService.java)
-
-[//]: # (│   └── RuleLoaderServiceImpl.java)
-
-[//]: # (│)
-
-[//]: # (└── PromotionRuleEngineMicroserviceApplication.java)
-
-[//]: # ()
-[//]: # ()
-[//]: # (```)
-
-[//]: # (## API Endpoints)
-
-[//]: # ()
-[//]: # (### Reload Rules)
-
-[//]: # ()
-[//]: # (`POST /reloadRules`)
-
-[//]: # ()
-[//]: # (Reloads the `rules.yaml` file at runtime without requiring a service restart.)
-
-[//]: # ()
-[//]: # (### Get Promotion for Player)
-
-[//]: # ()
-[//]: # (`POST /promotion`)
-
-[//]: # ()
-[//]: # (Evaluates player attributes against defined promotion rules and returns a matching promotion if found.)
-
-[//]: # ()
-[//]: # (#### Request Body)
-
-[//]: # ()
-[//]: # (The `PlayerRequest` object should contain the following player attributes:)
-
-[//]: # ()
-[//]: # (| Field                 | Type    | Description                               | Required | Example |)
-
-[//]: # (| :-------------------- | :------ | :---------------------------------------- | :------- | :------ |)
-
-[//]: # (| `level`               | integer | Player level &#40;minimum 1&#41;                  | Yes      | `6`     |)
-
-[//]: # (| `country`             | string  | Player country code                       | Yes      | `"IN"`  |)
-
-[//]: # (| `spendTier`           | string  | Player spend tier &#40;allowed: LOW, MEDIUM, HIGH&#41;. Case-insensitive. | No       | `"low"` |)
-
-[//]: # (| `daysSinceLastPurchase` | integer | Days since player's last purchase         | No       | `3`     |)
-
-[//]: # (| `abBucket`            | string  | A/B testing bucket assigned to the player | No       | `"A"`   |)
-
-[//]: # ()
-[//]: # (#### Responses)
-
-[//]: # ()
-[//]: # (* **200 OK**: Promotion matched and returned.)
-
-[//]: # (* **204 No Content**: No matching promotion found.)
-
-[//]: # (* **400 Bad Request**: Invalid request.)
-
-[//]: # ()
-[//]: # (### Get All Loaded Promotion Rules)
-
-[//]: # ()
-[//]: # (`GET /rules`)
-
-[//]: # ()
-[//]: # (Retrieves all currently loaded promotion rules. You can optionally filter rules by country using a query parameter.)
-
-[//]: # ()
-[//]: # (#### Query Parameters)
-
-[//]: # ()
-[//]: # (| Field     | Type   | Description                | Required |)
-
-[//]: # (| :-------- | :----- | :------------------------- | :------- |)
-
-[//]: # (| `country` | string | Country code to filter rules | No       |)
-
-[//]: # ()
-[//]: # (### Get Evaluation Metrics)
-
-[//]: # ()
-[//]: # (`GET /metrics`)
-
-[//]: # ()
-[//]: # (Returns performance metrics for the promotion rule engine, including total evaluations, hits, misses, and average latency.)
-
-
-
 # 🎰 Promotion Rule Engine – Scopely Backend Intern Assignment
 
 A lightweight, extensible Spring Boot microservice to evaluate promotion rules against player attributes, with A/B testing, time windows, smart suggestions, and metrics.
@@ -421,6 +192,31 @@ Raw OpenAPI JSON:
 
 ---
 
+## 📘 Swagger UI Preview
+![Swagger UI Home](images/swagger-home.png)
+
+### 🔹 Get Rules API
+
+![Get Rules API](images/getRules.png)
+
+### 🔹 Get Promotions API
+
+![Promotions API](images/getPromotion1.png)
+![Promotions API](images/getPromotion2.png)
+![Promotions API](images/getPromotion3.png)
+![Promotions API](images/getPromotion4.png)
+
+### 🔹 DTOs Used(Request Bodies)
+![DTOs](images/dtos1.png)
+![DTOs](images/dtos2.png)
+![DTOs](images/dtos3.png)
+
+### 🔹 Validation Checks
+![validation checks](images/validationChecks.png)
+
+
+------
+
 ## ⚙️ How to Set Up Locally
 
 Follow these steps to run the Promotion Rule Engine microservice on your machine:
@@ -576,7 +372,6 @@ AI was used as a learning and productivity assistant, not a code generator.
 - ➕ Add new rule via admin POST endpoint
 - 🧪 Add basic test coverage (JUnit + Mockito)
 - 🐳 Dockerize for container-based deployment
-- 📷 Add Swagger screenshots in README
 - 📊 Promotion analytics/logging
 - ⚡ Caching and lookup optimization for large rule sets
 
